@@ -32,4 +32,4 @@ public function registerBundles()
 
 ## Documentation
 
-* see [/resources/docs](resources/docs/index.md)-folder for usage.
+* see [/Resources/docs](Resources/docs/index.md)-folder for usage.
