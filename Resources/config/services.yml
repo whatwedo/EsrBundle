@@ -1,0 +1,13 @@
+parameters:
+    whatwedo_esr.manager.class: whatwedo\EsrBundle\Manager\EsrManager
+    whatwedo_esr.twig.esr_extension.class: whatwedo\EsrBundle\Twig\EsrExtension
+
+services:
+    whatwedo_esr.manager:
+        class: %whatwedo_esr.manager.class%
+        arguments: [@twig, @knp_snappy.pdf]
+
+    whatwedo_esr.twig.esr_extension:
+        class: %whatwedo_esr.twig.esr_extension.class%
+        tags:
+            - { name: twig.extension }

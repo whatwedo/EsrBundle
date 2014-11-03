@@ -1,0 +1,29 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title></title>
+</head>
+<body>
+{% include 'whatwedoEsrBundle::_esr.html.twig' with { 'data': data } only %}
+<style type="text/css">
+    #esr_outer {
+        left: 0;
+        bottom: 0;
+        position: fixed;
+    }
+    html {
+        margin: 0;
+        padding: 0;
+    }
+    body {
+        position: relative;
+        margin: 0;
+        height: 29.5cm;
+        width: 21cm;
+        padding: 0;
+    }
+</style>
+</body>
+</html>
+
