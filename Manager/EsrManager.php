@@ -52,7 +52,7 @@ class EsrManager
         $this->knpSnappy = $knpSnappy;
     }
 
-    protected function getPdfOutput(Configuration $configuration)
+    public function getPdfOutput(Configuration $configuration)
     {
         $html = $this->getHtmlOutput($configuration);
 
