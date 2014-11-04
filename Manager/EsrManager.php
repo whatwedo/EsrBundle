@@ -65,6 +65,7 @@ class EsrManager
             'margin-top' => 0,
             'page-width' => 210,
             'page-height' => 297,
+            'outline-depth' => 0,
         ));
 
         return $generator->getOutputFromHtml($html);
