@@ -453,7 +453,6 @@ class Configuration
             '%s' .          // Referenznummer mit Prüfziffer
             '+ ' .          // Hilfszeichen
             '%s' .          // Teilnehmernummer
-            '%s' .          // Prüfziffer
             '>'             // Hilfszeichen
             ,
             str_pad($this->getAmount(), 10, '0', STR_PAD_LEFT),
