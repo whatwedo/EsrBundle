@@ -11,3 +11,5 @@ services:
         class: %whatwedo_esr.twig.esr_extension.class%
         tags:
             - { name: twig.extension }
+        arguments:
+            - "@kernel"

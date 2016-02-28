@@ -105,4 +105,4 @@ class EsrManager
     {
         file_put_contents($path, $this->getHtmlOutput($configuration));
     }
-} 
+}

@@ -470,8 +470,9 @@ class Configuration
     {
         $digts = array(0,9,4,6,8,2,7,1,3,5);
         $next = 0;
+        $nr = strlen($number);
 
-        for ($i = 0; $i < strlen($number); $i++)
+        for ($i = 0; $i < $nr; $i++)
         {
             $next = $digts[($next + substr($number, $i, 1)) % 10];
         }

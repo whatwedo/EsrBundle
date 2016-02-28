@@ -28,6 +28,7 @@
 namespace whatwedo\EsrBundle\Twig;
 
 use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\HttpKernel\KernelInterface;
 use whatwedo\EsrBundle\Configuration\Configuration;
 
 /**
@@ -35,6 +36,20 @@ use whatwedo\EsrBundle\Configuration\Configuration;
  */
 class EsrExtension extends \Twig_Extension
 {
+    /**
+     * @var KernelInterface
+     */
+    protected $kernel;
+
+    /**
+     * EsrExtension constructor.
+     * @param KernelInterface $kernel
+     */
+    public function __construct(KernelInterface $kernel)
+    {
+        $this->kernel = $kernel;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -51,16 +66,16 @@ class EsrExtension extends \Twig_Extension
 
         switch ($type) {
             case Configuration::TYPE_ESR_BORDERED:
-                $file = new File(__DIR__ . '/../Resources/public/images/esr_bordered.jpg');
+                $file = new File($this->kernel->locateResource('@whatwedoEsrBundle/Resources/public/images/esr_bordered.jpg'));
                 break;
             case Configuration::TYPE_BESR_BOXED:
-                $file = new File(__DIR__ . '/../Resources/public/images/besr_boxed.jpg');
+                $file = new File($this->kernel->locateResource('@whatwedoEsrBundle/Resources/public/images/besr_boxed.jpg'));
                 break;
             case Configuration::TYPE_BESR_BORDERED:
-                $file = new File(__DIR__ . '/../Resources/public/images/besr_bordered.jpg');
+                $file = new File($this->kernel->locateResource('@whatwedoEsrBundle/Resources/public/images/besr_bordered.jpg'));
                 break;
             default:
-                $file = new File(__DIR__ . '/../Resources/public/images/esr_boxed.jpg');
+                $file = new File($this->kernel->locateResource('@whatwedoEsrBundle/Resources/public/images/esr_boxed.jpg'));
                 break;
         }
 
