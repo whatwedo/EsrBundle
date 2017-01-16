@@ -4,11 +4,13 @@ parameters:
 
 services:
     whatwedo_esr.manager:
-        class: %whatwedo_esr.manager.class%
-        arguments: [@twig, @knp_snappy.pdf]
+        class: "%whatwedo_esr.manager.class%"
+        arguments:
+            - "@twig"
+            - "@knp_snappy.pdf"
 
     whatwedo_esr.twig.esr_extension:
-        class: %whatwedo_esr.twig.esr_extension.class%
+        class: "%whatwedo_esr.twig.esr_extension.class%"
         tags:
             - { name: twig.extension }
         arguments:
