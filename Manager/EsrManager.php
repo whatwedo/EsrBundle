@@ -26,7 +26,7 @@
  */
 namespace whatwedo\EsrBundle\Manager;
 
-use Knp\Bundle\SnappyBundle\Snappy\LoggableGenerator;
+use Knp\Snappy\AbstractGenerator;
 use Symfony\Component\HttpFoundation\Response;
 use Twig_Environment;
 use whatwedo\EsrBundle\Configuration\Configuration;
@@ -42,11 +42,11 @@ class EsrManager
     protected $templating;
 
     /**
-     * @var LoggableGenerator
+     * @var AbstractGenerator
      */
     protected $knpSnappy;
 
-    public function __construct(Twig_Environment $templating, LoggableGenerator $knpSnappy)
+    public function __construct(Twig_Environment $templating, AbstractGenerator $knpSnappy)
     {
         $this->templating = $templating;
         $this->knpSnappy = $knpSnappy;
@@ -56,9 +56,7 @@ class EsrManager
     {
         $html = $this->getHtmlOutput($configuration);
 
-        $generator = $this->knpSnappy->getInternalGenerator();
-
-        $generator->setOptions(array(
+        return $this->knpSnappy->getOutputFromHtml($html, array(
             'margin-bottom' => 0,
             'margin-left' => 0,
             'margin-right' => 0,
@@ -67,8 +65,6 @@ class EsrManager
             'page-height' => 297,
             'outline-depth' => 0,
         ));
-
-        return $generator->getOutputFromHtml($html);
     }
 
     /**
