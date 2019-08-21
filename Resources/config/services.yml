@@ -10,7 +10,7 @@ services:
             - "@knp_snappy.pdf"
 
     whatwedo\EsrBundle\Manager\EsrManager: '@whatwedo_esr.manager'
-s
+
     whatwedo_esr.twig.esr_extension:
         class: "%whatwedo_esr.twig.esr_extension.class%"
         tags:
