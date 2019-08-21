@@ -1,7 +1,7 @@
 {
     "name": "whatwedo/esr-bundle",
-    "type": "library",
-    "description": "Symfony2 bundle for creating orange inpayment slip PDF's",
+    "type": "symfony-bundle",
+    "description": "Symfony4 bundle for creating orange inpayment slip PDF's",
     "license": "MIT",
     "keywords": ["postfinance", "e-payment", "esr", "ips"],
     "target-dir": "whatwedo/EsrBundle",
@@ -11,18 +11,23 @@
             "name": "Ueli Banholzer",
             "email": "ueli@whatwedo.ch",
             "homepage": "https://whatwedo.ch"
+        },
+        {
+            "name": "Maurizio Monticelli",
+            "email": "maurizio@whatwedo.ch"
         }
+
     ],
     "autoload": {
-        "psr-0": {
-            "whatwedo\\EsrBundle": ""
+        "psr-4": {
+            "whatwedo\\EsrBundle\\": ""
         }
     },
     "minimum-stability": "dev",
     "require": {
-        "php": ">=5.3.3",
+        "php": ">=7.3",
         "knplabs/knp-snappy-bundle": "^1.5",
         "twig/twig": "~1.0|~2.0",
-        "symfony/http-foundation": "~2.3|~3.0|~4.0"
+        "symfony/http-foundation": "~4.0"
     }
 }
