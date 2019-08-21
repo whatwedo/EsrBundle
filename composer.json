@@ -4,7 +4,6 @@
     "description": "Symfony4 bundle for creating orange inpayment slip PDF's",
     "license": "MIT",
     "keywords": ["postfinance", "e-payment", "esr", "ips"],
-    "target-dir": "whatwedo/EsrBundle",
     "homepage": "https://github.com/whatwedo/EsrBundle",
     "authors": [
         {
@@ -16,7 +15,6 @@
             "name": "Maurizio Monticelli",
             "email": "maurizio@whatwedo.ch"
         }
-
     ],
     "autoload": {
         "psr-4": {

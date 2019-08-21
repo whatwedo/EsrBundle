@@ -466,7 +466,7 @@ class Configuration
         );
     }
 
-    static function modulo10($number)
+    private static function modulo10($number)
     {
         $digts = array(0,9,4,6,8,2,7,1,3,5);
         $next = 0;

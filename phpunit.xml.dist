@@ -17,5 +17,5 @@
         <testsuite name="whateodo-ESR-Bundle Test Suite">
             <directory>./Tests</directory>
         </testsuite>
-    </testsuites>s
+    </testsuites>
 </phpunit>
