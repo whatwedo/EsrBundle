@@ -9,6 +9,7 @@ use whatwedo\EsrBundle\Manager\EsrManager;
 
 class FunctionalTest extends TestCase
 {
+    protected $container;
     /** @var TestKernel */
     private $kernel;
     /** @var Filesystem */
@@ -37,14 +38,8 @@ class FunctionalTest extends TestCase
 
     public function testEsrA4Creation()
     {
-        $this->kernel->setConfigurationFilename(__DIR__ . '/fixtures/config/out_of_the_box.yml');
-        $this->kernel->boot();
-        $container = $this->kernel->getContainer();
-
+        $esrManager = $this->getEsrManager();
         $confguration = $this->getTestConfig();
-
-        /** @var EsrManager $esrManager */
-        $esrManager = $container->get('whatwedo_esr.manager');
 
         $esrManager->writePdfOutput(__DIR__ . '/testOutput.pdf', $confguration);
         $esrManager->writeHtmlOutput(__DIR__ . '/testOutput.html', $confguration);
@@ -57,16 +52,11 @@ class FunctionalTest extends TestCase
 
     public function testEsrA5Creation()
     {
-        $this->kernel->setConfigurationFilename(__DIR__ . '/fixtures/config/out_of_the_box.yml');
-        $this->kernel->boot();
-        $container = $this->kernel->getContainer();
-
+        $esrManager = $this->getEsrManager();
         $confguration = $this->getTestConfig();
+
         $confguration->setFormat(Configuration::FORMAT_A5);
         $confguration->setType(Configuration::TYPE_ESR_BORDERED);
-
-        /** @var EsrManager $esrManager */
-        $esrManager = $container->get('whatwedo_esr.manager');
 
         $esrManager->writePdfOutput(__DIR__ . '/testOutput.pdf', $confguration);
         $esrManager->writeHtmlOutput(__DIR__ . '/testOutput.html', $confguration);
@@ -79,16 +69,11 @@ class FunctionalTest extends TestCase
 
     public function testBEsrA5Creation()
     {
-        $this->kernel->setConfigurationFilename(__DIR__ . '/fixtures/config/out_of_the_box.yml');
-        $this->kernel->boot();
-        $container = $this->kernel->getContainer();
-
+        $esrManager = $this->getEsrManager();
         $confguration = $this->getTestConfig();
+
         $confguration->setFormat(Configuration::FORMAT_A5);
         $confguration->setType(Configuration::TYPE_BESR_BORDERED);
-
-        /** @var EsrManager $esrManager */
-        $esrManager = $container->get('whatwedo_esr.manager');
 
         $esrManager->writePdfOutput(__DIR__ . '/testOutput.pdf', $confguration);
         $esrManager->writeHtmlOutput(__DIR__ . '/testOutput.html', $confguration);
@@ -100,16 +85,11 @@ class FunctionalTest extends TestCase
 
     public function testEsrESRCreation()
     {
-        $this->kernel->setConfigurationFilename(__DIR__ . '/fixtures/config/out_of_the_box.yml');
-        $this->kernel->boot();
-        $container = $this->kernel->getContainer();
-
+        $esrManager = $this->getEsrManager();
         $confguration = $this->getTestConfig();
+
         $confguration->setFormat(Configuration::FORMAT_ESR);
         $confguration->setType(Configuration::TYPE_BESR_BOXED);
-
-        /** @var EsrManager $esrManager */
-        $esrManager = $container->get('whatwedo_esr.manager');
 
         $esrManager->writePdfOutput(__DIR__ . '/testOutput.pdf', $confguration);
         $esrManager->writeHtmlOutput(__DIR__ . '/testOutput.html', $confguration);
@@ -141,6 +121,22 @@ class FunctionalTest extends TestCase
         $confguration->setSenderAdditional('reviceverAdditional');
         $confguration->setSenderCity('9876 senderCity');
         return $confguration;
+    }
+
+    /**
+     * @return EsrManager
+     */
+    private function getEsrManager(): EsrManager
+    {
+        if ($this->container == null) {
+            $this->kernel->setConfigurationFilename(__DIR__ . '/fixtures/config/out_of_the_box.yml');
+            $this->kernel->boot();
+            $this->container = $this->kernel->getContainer();
+        }
+
+        /** @var EsrManager $esrManager */
+        $esrManager = $this->container->get('whatwedo_esr.manager');
+        return $esrManager;
     }
 
 }
