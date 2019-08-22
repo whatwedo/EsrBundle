@@ -5,9 +5,12 @@ parameters:
 services:
     whatwedo_esr.manager:
         class: "%whatwedo_esr.manager.class%"
+        public: true
         arguments:
             - "@twig"
             - "@knp_snappy.pdf"
+
+    whatwedo\EsrBundle\Manager\EsrManager: '@whatwedo_esr.manager'
 
     whatwedo_esr.twig.esr_extension:
         class: "%whatwedo_esr.twig.esr_extension.class%"
