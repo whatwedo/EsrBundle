@@ -2,26 +2,26 @@
 /*
  * Copyright (c) 2014, whatwedo GmbH
  * All rights reserved
- * 
- * Redistribution and use in source and binary forms, with or without 
+ *
+ * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- * 
- * 1. Redistributions of source code must retain the above copyright notice, 
+ *
+ * 1. Redistributions of source code must retain the above copyright notice,
  *    this list of conditions and the following disclaimer.
- * 
+ *
  * 2. Redistributions in binary form must reproduce the above copyright notice,
- *    this list of conditions and the following disclaimer in the documentation 
+ *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
- * 
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" 
- * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED 
- * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. 
- * IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, 
- * INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT 
- * NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR 
- * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
- * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) 
- * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+ * IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
+ * INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+ * NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
+ * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
@@ -36,6 +36,20 @@ class Configuration
     const TYPE_ESR_BORDERED  = 2;
     const TYPE_BESR_BOXED    = 4;
     const TYPE_BESR_BORDERED = 8;
+
+    // on A4 bottom
+    const FORMAT_A4 =  'A4';
+
+    // on A5 landscape bottom
+    const FORMAT_A5 = 'A5';
+
+    // esr only
+    const FORMAT_ESR = 'ESR';
+
+    /**
+     * @var string s
+     */
+    protected $format = self::FORMAT_A4;
 
     /**
      * @var int ESR-Typ
@@ -113,6 +127,23 @@ class Configuration
     protected $esrBackground = false;
 
     /**
+     * @return string
+     */
+    public function getFormat(): string
+    {
+        return $this->format;
+    }
+
+    /**
+     * @param string $format
+     */
+    public function setFormat(string $format): Configuration
+    {
+        $this->format = $format;
+        return $this;
+    }
+
+    /**
      * @return int
      */
     public function getType()
@@ -124,7 +155,7 @@ class Configuration
      * @param int $type
      * @return Configuration
      */
-    public function setType($type)
+    public function setType(int $type): Configuration
     {
         $this->type = $type;
 
@@ -155,7 +186,7 @@ class Configuration
      * @param string $bank
      * @return Configuration
      */
-    public function setBank($bank)
+    public function setBank(string $bank): Configuration
     {
         $this->bank = $bank;
 
@@ -174,7 +205,7 @@ class Configuration
      * @param string $bankCity
      * @return Configuration
      */
-    public function setBankCity($bankCity)
+    public function setBankCity($bankCity): Configuration
     {
         $this->bankCity = $bankCity;
 
@@ -193,7 +224,7 @@ class Configuration
      * @param string $receiver
      * @return Configuration
      */
-    public function setReceiver($receiver)
+    public function setReceiver(string $receiver): Configuration
     {
         $this->receiver = $receiver;
 
@@ -212,7 +243,7 @@ class Configuration
      * @param string $receiverAddress
      * @return Configuration
      */
-    public function setReceiverAddress($receiverAddress)
+    public function setReceiverAddress(string $receiverAddress): Configuration
     {
         $this->receiverAddress = $receiverAddress;
 
@@ -231,7 +262,7 @@ class Configuration
      * @param string $receiverAdditional
      * @return Configuration
      */
-    public function setReceiverAdditional($receiverAdditional)
+    public function setReceiverAdditional(string $receiverAdditional): Configuration
     {
         $this->receiverAdditional = $receiverAdditional;
 
@@ -250,7 +281,7 @@ class Configuration
      * @param string $receiverCity
      * @return Configuration
      */
-    public function setReceiverCity($receiverCity)
+    public function setReceiverCity(string $receiverCity): Configuration
     {
         $this->receiverCity = $receiverCity;
 
@@ -269,7 +300,7 @@ class Configuration
      * @param string $receiverAccount
      * @return Configuration
      */
-    public function setReceiverAccount($receiverAccount)
+    public function setReceiverAccount(string $receiverAccount): Configuration
     {
         $this->receiverAccount = $receiverAccount;
 
@@ -287,10 +318,12 @@ class Configuration
     /**
      * @param int $amount
      * @return Configuration
+     *
+     * amount in cents
      */
-    public function setAmount($amount)
+    public function setAmount(int $cents): Configuration
     {
-        $this->amount = $amount;
+        $this->amount = $cents;
 
         return $this;
     }
@@ -307,7 +340,7 @@ class Configuration
      * @param string $sender
      * @return Configuration
      */
-    public function setSender($sender)
+    public function setSender(string $sender): Configuration
     {
         $this->sender = $sender;
 
@@ -326,7 +359,7 @@ class Configuration
      * @param string $senderAddress
      * @return Configuration
      */
-    public function setSenderAddress($senderAddress)
+    public function setSenderAddress(string $senderAddress): Configuration
     {
         $this->senderAddress = $senderAddress;
 
@@ -345,7 +378,7 @@ class Configuration
      * @param string $senderAdditional
      * @return Configuration
      */
-    public function setSenderAdditional($senderAdditional)
+    public function setSenderAdditional(string $senderAdditional): Configuration
     {
         $this->senderAdditional = $senderAdditional;
 
@@ -364,7 +397,7 @@ class Configuration
      * @param string $senderCity
      * @return Configuration
      */
-    public function setSenderCity($senderCity)
+    public function setSenderCity(string $senderCity): Configuration
     {
         $this->senderCity = $senderCity;
 
@@ -393,7 +426,7 @@ class Configuration
      * @param string $referenceNumber
      * @return Configuration
      */
-    public function setReferenceNumber($referenceNumber)
+    public function setReferenceNumber(string $referenceNumber): Configuration
     {
         $this->referenceNumber = $referenceNumber;
 
@@ -427,7 +460,7 @@ class Configuration
      * @param boolean $esrBackground
      * @return Configuration
      */
-    public function setEsrBackground($esrBackground = true)
+    public function setEsrBackground(bool $esrBackground):Configuration
     {
         $this->esrBackground = $esrBackground;
 
