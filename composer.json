@@ -14,6 +14,10 @@
         {
             "name": "Maurizio Monticelli",
             "email": "maurizio@whatwedo.ch"
+        },
+        {
+            "name": "Nicolo Singer",
+            "email": "nicolo@whatwedo.ch"
         }
     ],
     "autoload": {
