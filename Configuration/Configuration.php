@@ -27,6 +27,16 @@
 
 namespace whatwedo\EsrBundle\Configuration;
 
+ use Sprain\SwissQrBill\DataGroup\Element\AdditionalInformation;
+ use Sprain\SwissQrBill\DataGroup\Element\AlternativeScheme;
+ use Sprain\SwissQrBill\DataGroup\Element\CombinedAddress;
+ use Sprain\SwissQrBill\DataGroup\Element\CreditorInformation;
+ use Sprain\SwissQrBill\DataGroup\Element\PaymentAmountInformation;
+ use Sprain\SwissQrBill\DataGroup\Element\PaymentReference;
+ use Sprain\SwissQrBill\QrBill;
+ use Sprain\SwissQrBill\Reference\QrPaymentReferenceGenerator;
+ use Symfony\Component\Validator\ConstraintViolationListInterface;
+
  /**
  * @author Ueli Banholzer <ueli@whatwedo.ch>
  */
@@ -36,6 +46,7 @@ class Configuration
     const TYPE_ESR_BORDERED  = 2;
     const TYPE_BESR_BOXED    = 4;
     const TYPE_BESR_BORDERED = 8;
+    const TYPE_QR            = 16;
 
     // on A4 bottom
     const FORMAT_A4 =  'A4';
@@ -46,6 +57,10 @@ class Configuration
     // esr only
     const FORMAT_ESR = 'ESR';
 
+    const REF_QRR = PaymentReference::TYPE_QR;
+
+    const REF_SCOR = PaymentReference::TYPE_SCOR;
+
     /**
      * @var string s
      */
@@ -55,6 +70,11 @@ class Configuration
      * @var int ESR-Typ
      */
     protected $type = self::TYPE_ESR_BOXED;
+
+    /**
+     * @var string Reference type
+     */
+    protected $ref = self::REF_QRR;
 
     /**
      * @var string «Einzahlung für» (BESR) Bank-Name
@@ -87,14 +107,29 @@ class Configuration
     protected $receiverCity = '';
 
     /**
+     * @var string 2 stelliger ISO Länder Code
+     */
+    protected $receiverCountry = 'CH';
+
+    /**
      * @var string Konto-Nummer (01-XXX-XX)
      */
     protected $receiverAccount = '';
 
     /**
+     * @var string IBAN
+     */
+    protected $receiverAccountIBAN = '';
+
+    /**
      * @var int Betrag
      */
     protected $amount = 0;
+
+    /**
+     * @var string Währung
+     */
+    protected $currency = 'CHF';
 
     /**
      * @var string «Einbezahlt von» Name
@@ -117,14 +152,39 @@ class Configuration
     protected $senderCity = '';
 
     /**
+     * @var string 2 stelliger ISO Länder Code
+     */
+    protected $senderCountry = 'CH';
+
+    /**
      * @var string Referenznummer (inkl. Prüfziffer)
      */
     protected $referenceNumber = '';
 
     /**
+     * @var int from your bank
+     */
+    protected $customerIdentificationNumber = 0;
+
+    /**
      * @var bool Soll ESR-Hintergrund gedruckt werden?
      */
     protected $esrBackground = false;
+
+    /**
+     * @var string
+     */
+    protected $message = '';
+
+    /**
+     * @var string
+     */
+    protected $billingInfo = '';
+
+    /**
+     * @var string[]
+     */
+    protected $alternativeSchemes = [];
 
     /**
      * @return string
@@ -172,6 +232,11 @@ class Configuration
     {
         return $this->getType() === Configuration::TYPE_ESR_BOXED
             || $this->getType() === Configuration::TYPE_BESR_BOXED;
+    }
+
+    public function isQr()
+    {
+        return $this->getType() === Configuration::TYPE_QR;
     }
 
     /**
@@ -291,6 +356,25 @@ class Configuration
     /**
      * @return string
      */
+    public function getReceiverCountry()
+    {
+        return $this->receiverCountry;
+    }
+
+    /**
+     * @param string $receiverCountry
+     * @return Configuration
+     */
+    public function setReceiverCountry(string $receiverCountry): Configuration
+    {
+        $this->receiverCountry = $receiverCountry;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
     public function getReceiverAccount()
     {
         return $this->receiverAccount;
@@ -303,6 +387,25 @@ class Configuration
     public function setReceiverAccount(string $receiverAccount): Configuration
     {
         $this->receiverAccount = $receiverAccount;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getReceiverAccountIBAN()
+    {
+        return $this->receiverAccountIBAN;
+    }
+
+    /**
+     * @param string $receiverAccountIBAN
+     * @return Configuration
+     */
+    public function setReceiverAccountIBAN(string $receiverAccountIBAN): Configuration
+    {
+        $this->receiverAccountIBAN = $receiverAccountIBAN;
 
         return $this;
     }
@@ -324,6 +427,25 @@ class Configuration
     public function setAmount(int $cents): Configuration
     {
         $this->amount = $cents;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCurrency()
+    {
+        return $this->currency;
+    }
+
+    /**
+     * @param string $currency
+     * @return Configuration
+     */
+    public function setCurrency(string $currency): Configuration
+    {
+        $this->currency = $currency;
 
         return $this;
     }
@@ -407,6 +529,97 @@ class Configuration
     /**
      * @return string
      */
+    public function getSenderCountry()
+    {
+        return $this->senderCountry;
+    }
+
+    /**
+     * @param string $senderCountry
+     * @return Configuration
+     */
+    public function setSenderCountry(string $senderCountry): Configuration
+    {
+        $this->senderCountry = $senderCountry;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMessage()
+    {
+        return $this->message;
+    }
+
+    /**
+     * @param string $message
+     * @return Configuration
+     */
+    public function setMessage(string $message): Configuration
+    {
+        $this->message = $message;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getBillingInfo()
+    {
+        return $this->billingInfo;
+    }
+
+    /**
+     * @param string $billingInfo
+     * @return Configuration
+     */
+    public function setBillingInfo(string $billingInfo): Configuration
+    {
+        $this->billingInfo = $billingInfo;
+
+        return $this;
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getAlternativeSchemes()
+    {
+        return $this->alternativeSchemes;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAlternativeSchemesHtml()
+    {
+        return join('<br>', array_map(function ($schema) {
+            $result = [];
+            preg_match('/(.+):(.+)/', $schema, $result);
+            if (count($result) == 3) {
+                return sprintf('<strong>%s:</strong> %s', $result[1], $result[2]);
+            }
+            return $schema;
+        }, $this->getAlternativeSchemes()));
+    }
+
+    /**
+     * @param string[] $alternativeSchemes
+     * @return Configuration
+     */
+    public function setAlternativeSchemes(array $alternativeSchemes): Configuration
+    {
+        $this->alternativeSchemes = $alternativeSchemes;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
     public function getRawReferenceNumber()
     {
         return $this->referenceNumber;
@@ -417,9 +630,17 @@ class Configuration
      */
     public function getReferenceNumber()
     {
-        return str_pad($this->getRawReferenceNumber(), 26, '0', STR_PAD_LEFT) .
-            self::modulo10($this->getRawReferenceNumber())
-            ;
+        if ($this->getType() == self::TYPE_QR) {
+            if ($this->getRef() == self::REF_QRR) {
+                return $this->getCustomerIdentificationNumber().$this->getRawReferenceNumber();
+            } elseif ($this->getRef() == self::REF_SCOR) {
+                return $this->getRawReferenceNumber();
+            }
+        } else {
+            return str_pad($this->getRawReferenceNumber(), 26, '0', STR_PAD_LEFT) .
+                self::modulo10($this->getRawReferenceNumber())
+                ;
+        }
     }
 
     /**
@@ -429,6 +650,44 @@ class Configuration
     public function setReferenceNumber(string $referenceNumber): Configuration
     {
         $this->referenceNumber = $referenceNumber;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getRef()
+    {
+        return $this->ref;
+    }
+
+    /**
+     * @param string $ref
+     * @return Configuration
+     */
+    public function setRef(string $ref): Configuration
+    {
+        $this->ref = $ref;
+
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getCustomerIdentificationNumber()
+    {
+        return $this->customerIdentificationNumber;
+    }
+
+    /**
+     * @param int $customerIdentificationNumber
+     * @return Configuration
+     */
+    public function setCustomerIdentificationNumber(int $customerIdentificationNumber): Configuration
+    {
+        $this->customerIdentificationNumber = $customerIdentificationNumber;
 
         return $this;
     }
@@ -511,5 +770,55 @@ class Configuration
         }
 
         return ((10 - $next) % 10);
+    }
+    /**
+     * @return string|ConstraintViolationListInterface
+     */
+    public function getQrCode()
+    {
+        $qrBill = QrBill::create();
+        $qrBill->setCreditorInformation(CreditorInformation::create($this->getReceiverAccountIBAN()));
+        $qrBill->setCreditor(CombinedAddress::create(
+            $this->getReceiver(),
+            $this->getReceiverAddress().' '.$this->getReceiverAdditional(),
+            $this->getReceiverCity(),
+            $this->getReceiverCountry())
+        );
+        $qrBill->setPaymentAmountInformation(PaymentAmountInformation::create(
+            $this->getCurrency(), $this->getAmount() / 100
+        ));
+        $qrBill->setUltimateDebtor(CombinedAddress::create(
+            $this->getSender(),
+            $this->getSenderAddress().' '.$this->getSenderAdditional(),
+            $this->getSenderCity(),
+            $this->getSenderCountry()
+        ));
+        if ($this->getRef() == self::REF_QRR) {
+            $qrBill->setPaymentReference(PaymentReference::create(
+                PaymentReference::TYPE_QR,
+                QrPaymentReferenceGenerator::generate(
+                    $this->getCustomerIdentificationNumber(), $this->getRawReferenceNumber()
+                ))
+            );
+        } elseif ($this->getRef() == self::REF_SCOR) {
+            $qrBill->setPaymentReference(PaymentReference::create(
+                PaymentReference::TYPE_SCOR,
+                $this->getReferenceNumber()
+            ));
+        }
+
+        if ($this->getMessage() || $this->getBillingInfo()) {
+            $qrBill->setAdditionalInformation(AdditionalInformation::create(
+                $this->getMessage(), $this->getBillingInfo()
+            ));
+        }
+        $qrBill->setAlternativeSchemes(array_map(function ($schema) {
+            return AlternativeScheme::create($schema);
+        }, $this->getAlternativeSchemes()));
+        if ($qrBill->isValid()) {
+            return base64_encode($qrBill->getQrCode()->writeString());
+        } else {
+            return $qrBill->getViolations();
+        }
     }
 }

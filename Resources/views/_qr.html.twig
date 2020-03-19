@@ -1,0 +1,103 @@
+{% macro amount(data) %}
+    <table>
+        <thead>
+            <th>Währung</th>
+            <th>Betrag</th>
+        </thead>
+        <tbody>
+            <td>
+                {{ data.currency }}
+            </td>
+            <td>
+                {{ (data.amount / 100)|number_format(2, '.', ' ')  }}
+            </td>
+        </tbody>
+    </table>
+{% endmacro %}
+
+{% macro creditor(data) %}
+    <strong>Konto / Zahlbar an</strong><br>
+    {{ data.receiverAccountIBAN }}<br>
+    {{ data.receiver }}<br>
+    {{ data.receiverAddress }} {{ data.receiverAdditional }}<br>
+    {{ data.receiverCountry }} - {{ data.receiverCity }}<br>
+{% endmacro %}
+
+{% macro reference(data) %}
+    <strong>Referenz</strong><br>
+    {{ data.getReferenceNumber }}<br>
+{% endmacro %}
+
+{% macro debtor(data) %}
+    <strong>Zahlbar durch</strong><br>
+    {{ data.sender }}<br>
+    {{ data.senderAddress }} {{ data.senderAdditional }}<br>
+    {{ data.senderCountry }} - {{ data.senderCity }}<br>
+{% endmacro %}
+
+{% macro additionalInfo(data) %}
+    <strong>Zusätzliche Informationen</strong><br>
+    {{ data.message }}<br>
+    {{ data.billingInfo }}<br>
+{% endmacro %}
+
+{% macro schemes(data) %}
+    {{ data.alternativeSchemesHtml | raw }}
+{% endmacro %}
+
+<div id="qr_outer">
+    <div id="qr_left">
+        <div id="qr_left_title">
+            <strong>Empfangsschein</strong>
+        </div>
+        <div id="qr_left_information">
+            <p>
+                {{ _self.creditor(data) }}
+                <br>
+                {{ _self.reference(data) }}
+                <br>
+                {{ _self.debtor(data) }}
+            </p>
+        </div>
+        <div id="qr_left_amount">
+            {{ _self.amount(data) }}
+        </div>
+        <div id="qr_left_acceptance">
+            <strong>Annahmestelle</strong>
+        </div>
+    </div>
+    <div id="qr_right">
+        <div id="qr_right_top">
+            <div id="qr_right_top_left">
+                <div id="qr_right_top_left_title">
+                    <strong>Zahlteil</strong>
+                </div>
+                <div id="qr_right_top_left_qr">
+                    {% set qrcode = data.qrCode %}
+                    {% if qrcode is iterable %}
+                        {% for message in qrcode %}
+                            {{ message.message }}
+                        {% endfor %}
+                    {% else %}
+                        <img src="data:image/png;base64,{{ qrcode | raw }}" alt="qrcode"/>
+                    {% endif %}
+                </div>
+                <div id="qr_right_top_left_amount">
+                    {{ _self.amount(data) }}
+                </div>
+            </div>
+            <div id="qr_right_top_information">
+                {{ _self.creditor(data) }}
+                <br>
+                {{ _self.reference(data) }}
+                <br>
+                {{ _self.additionalInfo(data) }}
+                <br>
+                {{ _self.debtor(data) }}
+            </div>
+        </div>
+        <div id="qr_right_bottom">
+            {{ _self.schemes(data) }}
+        </div>
+    </div>
+</div>

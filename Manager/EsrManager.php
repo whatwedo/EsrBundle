@@ -89,7 +89,8 @@ class EsrManager
      */
     protected function getHtmlOutput(Configuration $configuration)
     {
-        $html = $this->templating->render('@whatwedoEsr\Pdf.html.twig', [
+        $type = $configuration->isQr() ? 'qr' : 'esr';
+        $html = $this->templating->render(sprintf('@whatwedoEsr\Pdf_%s.html.twig', $type), [
             'data' => $configuration,
         ]);
 

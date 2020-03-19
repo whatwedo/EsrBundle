@@ -99,6 +99,23 @@ class FunctionalTest extends TestCase
         unlink(__DIR__ . '/testOutput.html');
     }
 
+    public function testEsrQrCreation()
+    {
+        $esrManager = $this->getEsrManager();
+        $configuration = $this->getTestConfig();
+
+        $configuration->setReferenceNumber('313947143000901');
+        $configuration->setFormat(Configuration::FORMAT_ESR);
+        $configuration->setType(Configuration::TYPE_QR);
+
+        $esrManager->writePdfOutput(__DIR__ . '/testOutput.pdf', $configuration);
+        $esrManager->writeHtmlOutput(__DIR__ . '/testOutput.html', $configuration);
+        $this->assertFileExists(__DIR__ . '/testOutput.pdf');
+        $this->assertFileEquals(__DIR__ . '/fixtures/outputs/outputQr.html', __DIR__ . '/testOutput.html');
+        unlink(__DIR__ . '/testOutput.pdf');
+        unlink(__DIR__ . '/testOutput.html');
+    }
+
     /**
      * @return Configuration
      */
@@ -112,6 +129,7 @@ class FunctionalTest extends TestCase
         $confguration->setEsrBackground(true);
         $confguration->setReceiver('Reciever');
         $confguration->setReceiverAccount('30-12346');
+        $confguration->setReceiverAccountIBAN('CH4431999123000889012');
         $confguration->setReceiverAdditional('revAdditional');
         $confguration->setReceiverAddress('revAddress');
         $confguration->setReceiverCity('1234 revCity');
@@ -120,6 +138,11 @@ class FunctionalTest extends TestCase
         $confguration->setSenderAddress('senderAddress');
         $confguration->setSenderAdditional('reviceverAdditional');
         $confguration->setSenderCity('9876 senderCity');
+        $confguration->setCustomerIdentificationNumber(210000);
+        $confguration->setAlternativeSchemes([
+            'Name AV1: UV;UltraPay005;12345',
+            'Name AV2: XY;XYService;54321',
+        ]);
         return $confguration;
     }
 
