@@ -62,6 +62,10 @@ class EsrManager
             'margin-bottom' => 0
         ];
 
+        if ($configuration->isQr()) {
+            $options['disable-smart-shrinking'] = true;
+        }
+
         if ($configuration->getFormat() == Configuration::FORMAT_A4) {
             $options['page-size'] = $configuration->getFormat();
             $options['margin-top'] = '190mm';
