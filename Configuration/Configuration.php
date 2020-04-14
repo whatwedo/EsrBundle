@@ -773,7 +773,7 @@ class Configuration
         return ((10 - $next) % 10);
     }
     /**
-     * @return string|ConstraintViolationListInterface
+     * @return string|ConstraintViolationListInterface|string[]
      */
     public function getQrCode()
     {
@@ -809,7 +809,7 @@ class Configuration
                 ));
             }
         } catch (InvalidQrPaymentReferenceException $e) {
-            return [$e->getMessage()];
+            return ['Customer ID too long (max 6) or Reference Number too long (max 20)'];
         }
 
         if ($this->getMessage() || $this->getBillingInfo()) {
