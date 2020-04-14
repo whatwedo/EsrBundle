@@ -3,7 +3,7 @@
     "type": "symfony-bundle",
     "description": "Symfony4 bundle for creating orange inpayment slip PDF's",
     "license": "MIT",
-    "keywords": ["postfinance", "e-payment", "esr", "ips"],
+    "keywords": ["postfinance", "e-payment", "esr", "ips", "qr-invoice"],
     "homepage": "https://github.com/whatwedo/EsrBundle",
     "authors": [
         {
