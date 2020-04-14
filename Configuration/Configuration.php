@@ -35,6 +35,7 @@ namespace whatwedo\EsrBundle\Configuration;
  use Sprain\SwissQrBill\DataGroup\Element\PaymentReference;
  use Sprain\SwissQrBill\QrBill;
  use Sprain\SwissQrBill\Reference\QrPaymentReferenceGenerator;
+ use Sprain\SwissQrBill\Validator\Exception\InvalidQrPaymentReferenceException;
  use Symfony\Component\Validator\ConstraintViolationListInterface;
 
  /**
@@ -780,7 +781,7 @@ class Configuration
         $qrBill->setCreditorInformation(CreditorInformation::create($this->getReceiverAccountIBAN()));
         $qrBill->setCreditor(CombinedAddress::create(
             $this->getReceiver(),
-            $this->getReceiverAddress().' '.$this->getReceiverAdditional(),
+            $this->getReceiverAddress() . ' ' . $this->getReceiverAdditional(),
             $this->getReceiverCity(),
             $this->getReceiverCountry())
         );
@@ -789,22 +790,26 @@ class Configuration
         ));
         $qrBill->setUltimateDebtor(CombinedAddress::create(
             $this->getSender(),
-            $this->getSenderAddress().' '.$this->getSenderAdditional(),
+            $this->getSenderAddress() . ' ' . $this->getSenderAdditional(),
             $this->getSenderCity(),
             $this->getSenderCountry()
         ));
-        if ($this->getRef() == self::REF_QRR) {
-            $qrBill->setPaymentReference(PaymentReference::create(
-                PaymentReference::TYPE_QR,
-                QrPaymentReferenceGenerator::generate(
-                    $this->getCustomerIdentificationNumber(), $this->getRawReferenceNumber()
-                ))
-            );
-        } elseif ($this->getRef() == self::REF_SCOR) {
-            $qrBill->setPaymentReference(PaymentReference::create(
-                PaymentReference::TYPE_SCOR,
-                $this->getReferenceNumber()
-            ));
+        try {
+            if ($this->getRef() == self::REF_QRR) {
+                $qrBill->setPaymentReference(PaymentReference::create(
+                    PaymentReference::TYPE_QR,
+                    QrPaymentReferenceGenerator::generate(
+                        $this->getCustomerIdentificationNumber(), $this->getRawReferenceNumber()
+                    ))
+                );
+            } elseif ($this->getRef() == self::REF_SCOR) {
+                $qrBill->setPaymentReference(PaymentReference::create(
+                    PaymentReference::TYPE_SCOR,
+                    $this->getReferenceNumber()
+                ));
+            }
+        } catch (InvalidQrPaymentReferenceException $e) {
+            return [$e->getMessage()];
         }
 
         if ($this->getMessage() || $this->getBillingInfo()) {
