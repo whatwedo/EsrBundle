@@ -633,7 +633,10 @@ class Configuration
     {
         if ($this->getType() == self::TYPE_QR) {
             if ($this->getRef() == self::REF_QRR) {
-                return $this->getCustomerIdentificationNumber().$this->getRawReferenceNumber();
+                $completeReferenceNumber  = str_pad($this->getCustomerIdentificationNumber(), 6, '0', STR_PAD_RIGHT);
+                $completeReferenceNumber .= str_pad($this->getRawReferenceNumber(), 20, '0', STR_PAD_LEFT);
+                $completeReferenceNumber .= self::modulo10($completeReferenceNumber);
+                return $completeReferenceNumber;
             } elseif ($this->getRef() == self::REF_SCOR) {
                 return $this->getRawReferenceNumber();
             }
@@ -794,23 +797,24 @@ class Configuration
             $this->getSenderCity(),
             $this->getSenderCountry()
         ));
-        try {
-            if ($this->getRef() == self::REF_QRR) {
+        if ($this->getRef() == self::REF_QRR) {
+            try {
                 $qrBill->setPaymentReference(PaymentReference::create(
                     PaymentReference::TYPE_QR,
                     QrPaymentReferenceGenerator::generate(
                         $this->getCustomerIdentificationNumber(), $this->getRawReferenceNumber()
                     ))
                 );
-            } elseif ($this->getRef() == self::REF_SCOR) {
-                $qrBill->setPaymentReference(PaymentReference::create(
-                    PaymentReference::TYPE_SCOR,
-                    $this->getReferenceNumber()
-                ));
+            } catch (InvalidQrPaymentReferenceException $e) {
+                return ['Customer ID too long (max 6) or Reference Number too long (max 20)'];
             }
-        } catch (InvalidQrPaymentReferenceException $e) {
-            return ['Customer ID too long (max 6) or Reference Number too long (max 20)'];
+        } elseif ($this->getRef() == self::REF_SCOR) {
+            $qrBill->setPaymentReference(PaymentReference::create(
+                PaymentReference::TYPE_SCOR,
+                $this->getReferenceNumber()
+            ));
         }
+
 
         if ($this->getMessage() || $this->getBillingInfo()) {
             $qrBill->setAdditionalInformation(AdditionalInformation::create(
