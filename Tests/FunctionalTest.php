@@ -103,7 +103,7 @@ class FunctionalTest extends TestCase
     {
         $esrManager = $this->getEsrManager();
         $configuration = $this->getTestConfig();
-
+        $configuration->setCustomerIdentificationNumber(210000);
         $configuration->setReferenceNumber('313947143000901');
         $configuration->setFormat(Configuration::FORMAT_ESR);
         $configuration->setType(Configuration::TYPE_QR);
@@ -133,12 +133,12 @@ class FunctionalTest extends TestCase
         $confguration->setReceiverAdditional('revAdditional');
         $confguration->setReceiverAddress('revAddress');
         $confguration->setReceiverCity('1234 revCity');
-        $confguration->setReferenceNumber('12345678901234567890123456');
+        $confguration->setCustomerIdentificationNumber('123456');
+        $confguration->setReferenceNumber('78901234567890123456');
         $confguration->setSender('Sender');
         $confguration->setSenderAddress('senderAddress');
         $confguration->setSenderAdditional('reviceverAdditional');
         $confguration->setSenderCity('9876 senderCity');
-        $confguration->setCustomerIdentificationNumber(210000);
         $confguration->setAlternativeSchemes([
             'Name AV1: UV;UltraPay005;12345',
             'Name AV2: XY;XYService;54321',
