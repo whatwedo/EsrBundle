@@ -80,6 +80,7 @@ class EsrManager
             $options['margin-top'] = '0mm';
             $options['page-height'] = '107mm';
             $options['page-width'] = '210mm';
+            $options['disable-smart-shrinking'] = false;
         }
 
 

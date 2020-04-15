@@ -13,7 +13,8 @@ $configuration = (new Configuration())
     ->setSenderCity('3014 Bern')
     ->setReceiverAccount('01-165-2')
     ->setAmount(394975) // float * 100
-    ->setReferenceNumber('22100305560000144678') // without check digit!
+    ->setCustomerIdentificationNumber('123456') // bank issued customer id (max 6 chars)
+    ->setReferenceNumber('22100305560000144678') // without check digit! (max 20 chars)
 ;
 
 /** @var EsrManager $esrManager */
