@@ -69,7 +69,9 @@ class EsrManager
         if ($configuration->getFormat() == Configuration::FORMAT_A4) {
             $options['page-size'] = $configuration->getFormat();
             $options['margin-top'] = '190mm';
-
+        }
+        if ($configuration->isQr()) {
+            $options['margin-top'] = '180mm'; // for scissors
         }
         if ($configuration->getFormat() == Configuration::FORMAT_A5) {
             $options['page-size'] = $configuration->getFormat();
