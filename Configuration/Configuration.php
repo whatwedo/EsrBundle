@@ -631,14 +631,20 @@ class Configuration
      */
     public function getReferenceNumber()
     {
+        $ref = '';
         if ($this->getType() == self::TYPE_QR && $this->getRef() == self::REF_SCOR) {
-            return $this->getRawReferenceNumber();
+            $ref = $this->getRawReferenceNumber();
         } else {
             $completeReferenceNumber  = str_pad($this->getCustomerIdentificationNumber(), 6, '0', STR_PAD_RIGHT);
             $completeReferenceNumber .= str_pad($this->getRawReferenceNumber(), 20, '0', STR_PAD_LEFT);
             $completeReferenceNumber .= self::modulo10($completeReferenceNumber);
-            return $completeReferenceNumber;
+            $ref = $completeReferenceNumber;
         }
+        $formattedRef = '';
+        for ($i = 0; $i < strlen($ref); $i++) {
+            $formattedRef .= ((($i+2) % 4 == 0) ? ' ' : '') . $ref[$i];
+        }
+        return $formattedRef;
     }
 
     /**
