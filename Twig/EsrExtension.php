@@ -29,12 +29,14 @@ namespace whatwedo\EsrBundle\Twig;
 
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpKernel\KernelInterface;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFunction;
 use whatwedo\EsrBundle\Configuration\Configuration;
 
 /**
  * @author Ueli Banholzer <ueli@whatwedo.ch>
  */
-class EsrExtension extends \Twig_Extension
+class EsrExtension extends AbstractExtension
 {
     /**
      * @var KernelInterface
@@ -56,7 +58,7 @@ class EsrExtension extends \Twig_Extension
     public function getFunctions()
     {
         return array(
-             new \Twig_SimpleFunction('esrBase64Background', array($this, 'getBackground')),
+             new TwigFunction('esrBase64Background', array($this, 'getBackground')),
         );
     }
 
