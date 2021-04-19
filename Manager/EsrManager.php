@@ -62,10 +62,16 @@ class EsrManager
             'margin-bottom' => 0
         ];
 
+        if ($configuration->isQr()) {
+            $options['disable-smart-shrinking'] = true;
+        }
+
         if ($configuration->getFormat() == Configuration::FORMAT_A4) {
             $options['page-size'] = $configuration->getFormat();
             $options['margin-top'] = '190mm';
-
+        }
+        if ($configuration->isQr()) {
+            $options['margin-top'] = '180mm'; // for scissors
         }
         if ($configuration->getFormat() == Configuration::FORMAT_A5) {
             $options['page-size'] = $configuration->getFormat();
@@ -76,6 +82,7 @@ class EsrManager
             $options['margin-top'] = '0mm';
             $options['page-height'] = '107mm';
             $options['page-width'] = '210mm';
+            $options['disable-smart-shrinking'] = false;
         }
 
 
@@ -89,7 +96,8 @@ class EsrManager
      */
     protected function getHtmlOutput(Configuration $configuration)
     {
-        $html = $this->templating->render('@whatwedoEsr\Pdf.html.twig', [
+        $type = $configuration->isQr() ? 'qr' : 'esr';
+        $html = $this->templating->render(sprintf('@whatwedoEsr\Pdf_%s.html.twig', $type), [
             'data' => $configuration,
         ]);
 

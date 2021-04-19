@@ -1,0 +1,143 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title></title>
+    <style type="text/css">
+        html {
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            margin: 0;
+            padding: 0;
+            padding-top: 10mm;
+            max-width: 100%;
+        }
+
+        #scissors1 {
+            position: fixed;
+            width: 20px;
+            height: 20px;
+            top: 100px;
+            left: 218px;
+            -webkit-transform: rotate(90deg);
+        }
+
+        #scissors2 {
+            position: fixed;
+            width: 20px;
+            height: 20px;
+            top: 25px;
+            left: 700px;
+            -webkit-transform: rotate(180deg);
+        }
+
+        #qr_outer {
+            font-family: Arial;
+            width: 210mm;
+            height: 105mm;
+            bottom: 0;
+            left: 0;
+            border-top: 1px dotted gray;
+            font-size: 9pt;
+        }
+
+        #qr_left {
+            width: 51mm;
+            height: 95mm;
+            padding: 5mm;
+            border-right: 1px dotted gray;
+            float: left;
+            font-size: 8pt;
+        }
+
+        #qr_right {
+            width: 138mm;
+            padding: 5mm;
+            height: 95mm;
+            float: right;
+        }
+        #qr_left_title {
+            width: 100%;
+            height: 7mm;
+            font-size: 14pt;
+        }
+        #qr_left_information {
+            width: 100%;
+            height: 56mm;
+        }
+
+        #qr_left_amount {
+            width: 100%;
+            height: 14mm;
+        }
+
+        #qr_left_acceptance {
+            width: 100%;
+            height: 18mm;
+        }
+
+        #qr_left_acceptance strong {
+            width: 100%;
+            text-align: right;
+            display: block;
+        }
+
+        #qr_left_amount th, #qr_right_top_left_amount th {
+            text-align: left;
+        }
+
+        #qr_left_amount th:first-child, #qr_right_top_left_amount th:first-child {
+            min-width: 20mm;
+        }
+
+        #qr_right_top {
+            width: 138mm;
+            height: 85mm;
+        }
+
+        #qr_right_top_left {
+            width: 46mm;
+            padding-right: 5mm;
+            height: 85mm;
+            float: left;
+        }
+
+        #qr_right_top_left_title {
+            width: 100%;
+            height: 7mm;
+            font-size: 14pt;
+        }
+
+        #qr_right_top_left_qr {
+            height: 46mm;
+            padding-top: 5mm;
+            padding-bottom: 5mm;
+        }
+
+        #qr_right_top_left_qr img {
+            height: 46mm;
+        }
+
+        #qr_right_top_left_amount {
+            height: 22mm;
+        }
+
+        #qr_right_top_information {
+            height: 85mm;
+            float: right;
+            width: 87mm;
+        }
+
+        #qr_right_bottom {
+            height: 10mm;
+        }
+    </style>
+
+</head>
+<body>
+{% include '@whatwedoEsr/_qr.html.twig' with { 'data': data } only %}
+</body>
+</html>
+

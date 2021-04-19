@@ -1,19 +1,21 @@
 # whatwedoEsrBundle
 
-Symfony2 bundle for creating [orange inpayment slip](https://www.postfinance.ch/en/biz/prod/pay/debsolution/inpayref/offer.html) PDF's
+Symfony2 bundle for creating [orange inpayment slip](https://www.postfinance.ch/en/biz/prod/pay/debsolution/inpayref/offer.html)
+and [QR invoices](https://www.paymentstandards.ch/dam/downloads/ig-qr-bill-en.pdf) PDF's
 
 ## Requirements
 
 This library has the following requirements:
 
 - PHP 5.3+
+- wkhtmltopdf 
 
 ## Installation
 
 install the library via composer:
 
 ```
-composer require "whatwedo/esr-bundle:dev-master"
+composer require "whatwedo/esr-bundle"
 ```
 
 ```php

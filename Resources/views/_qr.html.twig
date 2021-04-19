@@ -1,0 +1,105 @@
+{% macro amount(data) %}
+    <table>
+        <thead>
+            <th>Währung</th>
+            <th>Betrag</th>
+        </thead>
+        <tbody>
+            <td>
+                {{ data.currency }}
+            </td>
+            <td>
+                {{ (data.amount / 100)|number_format(2, '.', ' ')  }}
+            </td>
+        </tbody>
+    </table>
+{% endmacro %}
+
+{% macro creditor(data) %}
+    <strong>Konto / Zahlbar an</strong><br>
+    {{ data.receiverAccountIBAN }}<br>
+    {{ data.receiver }}<br>
+    {{ data.receiverAddress }} {{ data.receiverAdditional }}<br>
+    {{ data.receiverCountry }} - {{ data.receiverCity }}<br>
+{% endmacro %}
+
+{% macro reference(data) %}
+    <strong>Referenz</strong><br>
+    {{ data.getReferenceNumber }}<br>
+{% endmacro %}
+
+{% macro debtor(data) %}
+    <strong>Zahlbar durch</strong><br>
+    {{ data.sender }}<br>
+    {{ data.senderAddress }} {{ data.senderAdditional }}<br>
+    {{ data.senderCountry }} - {{ data.senderCity }}<br>
+{% endmacro %}
+
+{% macro additionalInfo(data) %}
+    <strong>Zusätzliche Informationen</strong><br>
+    {{ data.message }}<br>
+    {{ data.billingInfo }}<br>
+{% endmacro %}
+
+{% macro schemes(data) %}
+    {{ data.alternativeSchemesHtml | raw }}
+{% endmacro %}
+
+<div id="qr_outer">
+    <div id="qr_left">
+        <div id="qr_left_title">
+            <strong>Empfangsschein</strong>
+        </div>
+        <div id="qr_left_information">
+            <p>
+                {{ _self.creditor(data) }}
+                <br>
+                {{ _self.reference(data) }}
+                <br>
+                {{ _self.debtor(data) }}
+            </p>
+        </div>
+        <div id="qr_left_amount">
+            {{ _self.amount(data) }}
+        </div>
+        <div id="qr_left_acceptance">
+            <strong>Annahmestelle</strong>
+        </div>
+    </div>
+    <svg id="scissors1" version="1.0" xmlns="http://www.w3.org/2000/svg" width="1280.000000pt" height="931.000000pt" viewBox="0 0 1280.000000 931.000000" preserveAspectRatio="xMidYMid meet"> <metadata> Created by potrace 1.15, written by Peter Selinger 2001-2017 </metadata> <g transform="translate(0.000000,931.000000) scale(0.100000,-0.100000)" fill="#000000" stroke="none"> <path d="M1650 9304 c-618 -57 -1125 -340 -1323 -739 -84 -170 -124 -309 -134 -460 -25 -422 223 -858 644 -1129 175 -113 347 -179 943 -364 614 -191 752 -238 1025 -349 429 -174 787 -380 1127 -650 91 -72 229 -202 436 -412 167 -168 313 -318 323 -332 l19 -27 -262 -265 c-312 -314 -472 -450 -733 -624 -416 -277 -842 -465 -1550 -685 -883 -274 -1049 -333 -1212 -433 -172 -106 -352 -271 -454 -415 -185 -261 -263 -571 -214 -852 16 -92 72 -262 112 -342 194 -384 658 -659 1243 -737 120 -16 450 -16 555 0 476 72 790 199 1077 438 313 260 478 610 439 933 -20 158 -106 395 -196 535 -68 107 -191 219 -363 330 -41 26 -70 51 -65 55 4 5 62 43 127 84 153 98 274 156 761 366 658 284 1069 479 1455 691 102 56 214 117 250 136 l65 35 720 -409 c1451 -825 3512 -1992 3595 -2035 226 -118 474 -199 760 -250 108 -19 162 -22 400 -22 243 -1 291 2 410 22 170 29 367 80 490 127 97 37 317 142 325 155 3 4 -53 41 -123 82 -2915 1710 -4977 2921 -5139 3019 -104 62 -119 75 -105 85 9 6 676 400 1482 874 1308 771 3438 2027 3817 2251 78 46 141 88 139 93 -1 5 -42 31 -92 58 -496 267 -1075 324 -1711 168 -166 -41 -393 -120 -543 -189 -69 -31 -631 -343 -1250 -693 -619 -349 -1585 -895 -2147 -1212 l-1023 -576 -177 96 c-421 229 -1127 569 -1713 826 -461 203 -525 233 -687 331 -84 51 -153 94 -153 97 0 3 21 18 48 35 66 41 330 306 382 384 94 140 163 330 180 496 31 299 -97 613 -354 869 -285 283 -657 453 -1116 511 -125 15 -425 27 -510 19z m490 -598 c322 -74 553 -240 665 -478 48 -101 66 -178 67 -283 1 -194 -63 -353 -201 -498 -143 -151 -330 -231 -571 -246 -244 -15 -426 17 -617 109 -141 67 -238 136 -341 244 -211 223 -276 479 -179 708 29 70 124 204 181 256 100 91 255 163 421 196 117 23 144 24 315 20 118 -3 180 -9 260 -28z m209 -6146 c345 -84 580 -352 598 -680 7 -126 -13 -218 -73 -340 -40 -80 -62 -109 -143 -191 -136 -136 -268 -209 -476 -264 -144 -38 -242 -48 -413 -42 -166 5 -248 21 -385 73 -198 76 -390 276 -449 467 -31 102 -23 242 20 352 127 325 492 590 887 644 109 15 336 5 434 -19z"/> </g> </svg>
+    <svg id="scissors2" version="1.0" xmlns="http://www.w3.org/2000/svg" width="1280.000000pt" height="931.000000pt" viewBox="0 0 1280.000000 931.000000" preserveAspectRatio="xMidYMid meet"> <metadata> Created by potrace 1.15, written by Peter Selinger 2001-2017 </metadata> <g transform="translate(0.000000,931.000000) scale(0.100000,-0.100000)" fill="#000000" stroke="none"> <path d="M1650 9304 c-618 -57 -1125 -340 -1323 -739 -84 -170 -124 -309 -134 -460 -25 -422 223 -858 644 -1129 175 -113 347 -179 943 -364 614 -191 752 -238 1025 -349 429 -174 787 -380 1127 -650 91 -72 229 -202 436 -412 167 -168 313 -318 323 -332 l19 -27 -262 -265 c-312 -314 -472 -450 -733 -624 -416 -277 -842 -465 -1550 -685 -883 -274 -1049 -333 -1212 -433 -172 -106 -352 -271 -454 -415 -185 -261 -263 -571 -214 -852 16 -92 72 -262 112 -342 194 -384 658 -659 1243 -737 120 -16 450 -16 555 0 476 72 790 199 1077 438 313 260 478 610 439 933 -20 158 -106 395 -196 535 -68 107 -191 219 -363 330 -41 26 -70 51 -65 55 4 5 62 43 127 84 153 98 274 156 761 366 658 284 1069 479 1455 691 102 56 214 117 250 136 l65 35 720 -409 c1451 -825 3512 -1992 3595 -2035 226 -118 474 -199 760 -250 108 -19 162 -22 400 -22 243 -1 291 2 410 22 170 29 367 80 490 127 97 37 317 142 325 155 3 4 -53 41 -123 82 -2915 1710 -4977 2921 -5139 3019 -104 62 -119 75 -105 85 9 6 676 400 1482 874 1308 771 3438 2027 3817 2251 78 46 141 88 139 93 -1 5 -42 31 -92 58 -496 267 -1075 324 -1711 168 -166 -41 -393 -120 -543 -189 -69 -31 -631 -343 -1250 -693 -619 -349 -1585 -895 -2147 -1212 l-1023 -576 -177 96 c-421 229 -1127 569 -1713 826 -461 203 -525 233 -687 331 -84 51 -153 94 -153 97 0 3 21 18 48 35 66 41 330 306 382 384 94 140 163 330 180 496 31 299 -97 613 -354 869 -285 283 -657 453 -1116 511 -125 15 -425 27 -510 19z m490 -598 c322 -74 553 -240 665 -478 48 -101 66 -178 67 -283 1 -194 -63 -353 -201 -498 -143 -151 -330 -231 -571 -246 -244 -15 -426 17 -617 109 -141 67 -238 136 -341 244 -211 223 -276 479 -179 708 29 70 124 204 181 256 100 91 255 163 421 196 117 23 144 24 315 20 118 -3 180 -9 260 -28z m209 -6146 c345 -84 580 -352 598 -680 7 -126 -13 -218 -73 -340 -40 -80 -62 -109 -143 -191 -136 -136 -268 -209 -476 -264 -144 -38 -242 -48 -413 -42 -166 5 -248 21 -385 73 -198 76 -390 276 -449 467 -31 102 -23 242 20 352 127 325 492 590 887 644 109 15 336 5 434 -19z"/> </g> </svg>
+    <div id="qr_right">
+        <div id="qr_right_top">
+            <div id="qr_right_top_left">
+                <div id="qr_right_top_left_title">
+                    <strong>Zahlteil</strong>
+                </div>
+                <div id="qr_right_top_left_qr">
+                    {% set qrcode = data.qrCode %}
+                    {% if qrcode is iterable %}
+                        {% for message in qrcode %}
+                            {{ message.message }}
+                        {% endfor %}
+                    {% else %}
+                        <img src="data:image/png;base64,{{ qrcode | raw }}" alt="qrcode"/>
+                    {% endif %}
+                </div>
+                <div id="qr_right_top_left_amount">
+                    {{ _self.amount(data) }}
+                </div>
+            </div>
+            <div id="qr_right_top_information">
+                {{ _self.creditor(data) }}
+                <br>
+                {{ _self.reference(data) }}
+                <br>
+                {{ _self.additionalInfo(data) }}
+                <br>
+                {{ _self.debtor(data) }}
+            </div>
+        </div>
+        <div id="qr_right_bottom">
+            {{ _self.schemes(data) }}
+        </div>
+    </div>
+</div>
