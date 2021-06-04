@@ -640,10 +640,25 @@ class Configuration
             $completeReferenceNumber .= self::modulo10($completeReferenceNumber);
             $ref = $completeReferenceNumber;
         }
+        return $this->formatRererencenumber($ref);
+    }
+
+    /**
+     * @param string $ref
+     * @param string $formattedRef
+     * @return string
+     */
+    private function formatRererencenumber(string $ref): string
+    {
         $formattedRef = '';
+        $ref = strrev($ref);
         for ($i = 0; $i < strlen($ref); $i++) {
-            $formattedRef .= ((($i+2) % 4 == 0) ? ' ' : '') . $ref[$i];
+            if ($i != 0 && ($i % 5 == 0)) {
+                $formattedRef .= ' ';
+            }
+            $formattedRef .= $ref[$i];
         }
+        $formattedRef = strrev($formattedRef);
         return $formattedRef;
     }
 
