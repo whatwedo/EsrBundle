@@ -1,6 +1,6 @@
 # Add IPS Background
 
-If you want to show your clients how they need to fill out the IPS, you can add a IPS background to the PDF. 
+If you want to show your clients how they need to fill out the IPS, you can add a IPS background to the PDF. Has no impact on the QR type. 
 
 ```php
 $configuration = (new Configuration())

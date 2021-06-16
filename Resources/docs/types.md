@@ -1,6 +1,6 @@
 # Different Types
 
-There are 4 different types of ISR:
+There are 5 different types of ISR:
 
 ## ESR boxed
 
@@ -32,5 +32,25 @@ There are 4 different types of ISR:
 
 ![BESR Bordered](../public/images/besr_bordered.jpg)
 
+
+## QR
+
+* Payment part with Swiss QR Code and of the receipt
+* ```->setType(Configuration::TYPE_QR)```
+* ```->setReceiverAccountIBAN('CH4431999123000889012');```
+Has to be a QR-IBAN, if you do not have one, ask your bank! `->setReceiverAccount` is not needed with the QR Type.
+
+_Optional:_
+```
+->setAlternativeSchemes([
+    'Name AV1: UV;UltraPay005;12345',
+    'Name AV2: XY;XYService;54321',
+]);
+```
+```
+->setMessage('Invoice for Order #123123');
+```
+
+![QR](../public/images/qr.png)
 
 * [back to index](index.md)
