@@ -163,9 +163,9 @@ class Configuration
     protected $referenceNumber = '';
 
     /**
-     * @var int from your bank
+     * @var ?int from your bank
      */
-    protected $customerIdentificationNumber = 0;
+    protected $customerIdentificationNumber = null;
 
     /**
      * @var bool Soll ESR-Hintergrund gedruckt werden?
@@ -693,7 +693,7 @@ class Configuration
     }
 
     /**
-     * @return int
+     * @return ?int
      */
     public function getCustomerIdentificationNumber()
     {
@@ -701,10 +701,10 @@ class Configuration
     }
 
     /**
-     * @param int $customerIdentificationNumber
+     * @param ?int $customerIdentificationNumber
      * @return Configuration
      */
-    public function setCustomerIdentificationNumber(int $customerIdentificationNumber): Configuration
+    public function setCustomerIdentificationNumber(?int $customerIdentificationNumber): Configuration
     {
         $this->customerIdentificationNumber = $customerIdentificationNumber;
 
