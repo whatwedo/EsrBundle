@@ -14,6 +14,7 @@ class FunctionalTest extends TestCase
     private $kernel;
     /** @var Filesystem */
     private $filesystem;
+
     public function setUp()
     {
         $this->kernel = new TestKernel(uniqid(), false);
@@ -35,83 +36,72 @@ class FunctionalTest extends TestCase
         $this->assertInstanceof('whatwedo\EsrBundle\Manager\EsrManager', $esrManager);
     }
 
-
     public function testEsrA4Creation()
     {
-        $esrManager = $this->getEsrManager();
         $confguration = $this->getTestConfig();
 
-        $esrManager->writePdfOutput(__DIR__ . '/testOutput.pdf', $confguration);
-        $esrManager->writeHtmlOutput(__DIR__ . '/testOutput.html', $confguration);
-        $this->assertFileExists(__DIR__ . '/testOutput.pdf');
-        $this->assertFileExists(__DIR__ . '/testOutput.html');
-        $this->assertFileEquals(__DIR__ . '/fixtures/outputs/outputEsr.html', __DIR__ . '/testOutput.html');
-        unlink(__DIR__ . '/testOutput.pdf');
-        unlink(__DIR__ . '/testOutput.html');
+        $this->runConfigTest($confguration);
     }
 
     public function testEsrA5Creation()
     {
-        $esrManager = $this->getEsrManager();
         $confguration = $this->getTestConfig();
 
         $confguration->setFormat(Configuration::FORMAT_A5);
         $confguration->setType(Configuration::TYPE_ESR_BORDERED);
 
-        $esrManager->writePdfOutput(__DIR__ . '/testOutput.pdf', $confguration);
-        $esrManager->writeHtmlOutput(__DIR__ . '/testOutput.html', $confguration);
-        $this->assertFileExists(__DIR__ . '/testOutput.pdf');
-        $this->assertFileEquals(__DIR__ . '/fixtures/outputs/outputEsrBoxed.html', __DIR__ . '/testOutput.html');
-        unlink(__DIR__ . '/testOutput.pdf');
-        unlink(__DIR__ . '/testOutput.html');
-
+        $this->runConfigTest($confguration);
     }
 
     public function testBEsrA5Creation()
     {
-        $esrManager = $this->getEsrManager();
         $confguration = $this->getTestConfig();
 
         $confguration->setFormat(Configuration::FORMAT_A5);
         $confguration->setType(Configuration::TYPE_BESR_BORDERED);
 
-        $esrManager->writePdfOutput(__DIR__ . '/testOutput.pdf', $confguration);
-        $esrManager->writeHtmlOutput(__DIR__ . '/testOutput.html', $confguration);
-        $this->assertFileExists(__DIR__ . '/testOutput.pdf');
-        $this->assertFileEquals(__DIR__ . '/fixtures/outputs/outputBesr.html', __DIR__ . '/testOutput.html');
-        unlink(__DIR__ . '/testOutput.pdf');
-        unlink(__DIR__ . '/testOutput.html');
+        $this->runConfigTest($confguration);
     }
 
     public function testEsrESRCreation()
     {
-        $esrManager = $this->getEsrManager();
         $confguration = $this->getTestConfig();
 
         $confguration->setFormat(Configuration::FORMAT_ESR);
         $confguration->setType(Configuration::TYPE_BESR_BOXED);
 
-        $esrManager->writePdfOutput(__DIR__ . '/testOutput.pdf', $confguration);
-        $esrManager->writeHtmlOutput(__DIR__ . '/testOutput.html', $confguration);
-        $this->assertFileExists(__DIR__ . '/testOutput.pdf');
-        $this->assertFileEquals(__DIR__ . '/fixtures/outputs/outputBesrBoxed.html', __DIR__ . '/testOutput.html');
-        unlink(__DIR__ . '/testOutput.pdf');
-        unlink(__DIR__ . '/testOutput.html');
+        $this->runConfigTest($confguration);
     }
 
     public function testEsrQrCreation()
     {
-        $esrManager = $this->getEsrManager();
         $configuration = $this->getTestConfig();
         $configuration->setCustomerIdentificationNumber(210000);
         $configuration->setReferenceNumber('313947143000901');
-        $configuration->setFormat(Configuration::FORMAT_ESR);
+        $configuration->setFormat(Configuration::FORMAT_A5);
         $configuration->setType(Configuration::TYPE_QR);
 
+        $this->runConfigTest($configuration);
+    }
+
+    public function testWithNullConfiguration()
+    {
+        $configuration = $this->getTestConfig();
+        $configuration->setCustomerIdentificationNumber(null);
+        $configuration->setReferenceNumber('313947143000901');
+        $configuration->setFormat(Configuration::FORMAT_A5);
+        $configuration->setType(Configuration::TYPE_QR);
+
+        $this->runConfigTest($configuration);
+    }
+
+    private function runConfigTest(Configuration $configuration)
+    {
+        $esrManager = $this->getEsrManager();
         $esrManager->writePdfOutput(__DIR__ . '/testOutput.pdf', $configuration);
         $esrManager->writeHtmlOutput(__DIR__ . '/testOutput.html', $configuration);
         $this->assertFileExists(__DIR__ . '/testOutput.pdf');
-        $this->assertFileEquals(__DIR__ . '/fixtures/outputs/outputQr.html', __DIR__ . '/testOutput.html');
+        $this->assertFileExists(__DIR__ . '/testOutput.html');
         unlink(__DIR__ . '/testOutput.pdf');
         unlink(__DIR__ . '/testOutput.html');
     }
