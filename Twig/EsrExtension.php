@@ -29,7 +29,16 @@ namespace whatwedo\EsrBundle\Twig;
 
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpKernel\KernelInterface;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFunction;
 use whatwedo\EsrBundle\Configuration\Configuration;
+
+if (!class_exists('Twig_Extension')) {
+    class_alias(AbstractExtension::class, 'Twig_Extension');
+}
+if (!class_exists('Twig_SimpleFunction')) {
+    class_alias(TwigFunction::class, 'Twig_SimpleFunction');
+}
 
 /**
  * @author Ueli Banholzer <ueli@whatwedo.ch>
