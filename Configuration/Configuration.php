@@ -840,7 +840,7 @@ class Configuration
             return AlternativeScheme::create($schema);
         }, $this->getAlternativeSchemes()));
         if ($qrBill->isValid()) {
-            return base64_encode($qrBill->getQrCode()->writeString());
+            return base64_encode($qrBill->getQrCode()->getAsString());
         } else {
             return $qrBill->getViolations();
         }
