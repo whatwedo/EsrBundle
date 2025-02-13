@@ -15,13 +15,13 @@ class FunctionalTest extends TestCase
     /** @var Filesystem */
     private $filesystem;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->kernel = new TestKernel(uniqid(), false);
         $this->filesystem = new Filesystem();
         $this->filesystem->mkdir($this->kernel->getCacheDir());
     }
-    public function tearDown()
+    public function tearDown(): void
     {
         $this->filesystem->remove($this->kernel->getCacheDir());
     }
