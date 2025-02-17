@@ -35,7 +35,7 @@
         "symfony/yaml": ">=3.4",
         "symfony/security-csrf": ">=3.4",
         "symfony/validator": ">=3.4",
-        "doctrine/annotations": "~1.0",
+        "doctrine/annotations": "~1.0|~2.0|~3.0",
         "symfony/mime": ">=3.4",
         "sprain/swiss-qr-bill": "^4.13"
     },
