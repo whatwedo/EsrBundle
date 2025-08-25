@@ -9,7 +9,7 @@
                 {{ data.currency }}
             </td>
             <td>
-                {{ (data.amount / 100)|number_format(2, '.', ' ')  }}
+                {{ (data.amount / 100)|number_format(2, '.', '&nbsp;')|raw  }}
             </td>
         </tbody>
     </table>
