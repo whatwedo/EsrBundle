@@ -635,8 +635,8 @@ class Configuration
         if ($this->getType() == self::TYPE_QR && $this->getRef() == self::REF_SCOR) {
             $ref = $this->getRawReferenceNumber();
         } else {
-            $completeReferenceNumber  = str_pad($this->getCustomerIdentificationNumber(), 6, '0', STR_PAD_RIGHT);
-            $completeReferenceNumber .= str_pad($this->getRawReferenceNumber(), 20, '0', STR_PAD_LEFT);
+            $completeReferenceNumber  = str_pad($this->getCustomerIdentificationNumber(), 8, '0', STR_PAD_LEFT);
+            $completeReferenceNumber .= str_pad($this->getRawReferenceNumber(), 10, '0', STR_PAD_LEFT);
             $completeReferenceNumber .= self::modulo10($completeReferenceNumber);
             $ref = $completeReferenceNumber;
         }
@@ -840,7 +840,7 @@ class Configuration
             return AlternativeScheme::create($schema);
         }, $this->getAlternativeSchemes()));
         if ($qrBill->isValid()) {
-            return base64_encode($qrBill->getQrCode()->writeString());
+            return base64_encode($qrBill->getQrCode()->getAsString());
         } else {
             return $qrBill->getViolations();
         }

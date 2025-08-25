@@ -9,7 +9,7 @@
                 {{ data.currency }}
             </td>
             <td>
-                {{ (data.amount / 100)|number_format(2, '.', ' ')  }}
+                {{ (data.amount / 100)|number_format(2, '.', '&nbsp;')|raw  }}
             </td>
         </tbody>
     </table>
@@ -81,7 +81,7 @@
                             {{ message.message }}
                         {% endfor %}
                     {% else %}
-                        <img src="data:image/png;base64,{{ qrcode | raw }}" alt="qrcode"/>
+                        <img src="data:image/svg+xml;base64,{{ qrcode | raw }}" alt="qrcode"/>
                     {% endif %}
                 </div>
                 <div id="qr_right_top_left_amount">
