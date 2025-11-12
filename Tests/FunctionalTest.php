@@ -120,14 +120,12 @@ class FunctionalTest extends TestCase
         $confguration->setReceiver('Reciever');
         $confguration->setReceiverAccount('30-12346');
         $confguration->setReceiverAccountIBAN('CH4431999123000889012');
-        $confguration->setReceiverAdditional('revAdditional');
         $confguration->setReceiverAddress('revAddress');
         $confguration->setReceiverCity('1234 revCity');
         $confguration->setCustomerIdentificationNumber('123456');
         $confguration->setReferenceNumber('78901234567890123456');
         $confguration->setSender('Sender');
         $confguration->setSenderAddress('senderAddress');
-        $confguration->setSenderAdditional('reviceverAdditional');
         $confguration->setSenderCity('9876 senderCity');
         $confguration->setAlternativeSchemes([
             'Name AV1: UV;UltraPay005;12345',
