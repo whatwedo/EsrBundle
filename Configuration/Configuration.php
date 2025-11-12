@@ -33,6 +33,7 @@ namespace whatwedo\EsrBundle\Configuration;
  use Sprain\SwissQrBill\DataGroup\Element\CreditorInformation;
  use Sprain\SwissQrBill\DataGroup\Element\PaymentAmountInformation;
  use Sprain\SwissQrBill\DataGroup\Element\PaymentReference;
+ use Sprain\SwissQrBill\DataGroup\Element\StructuredAddress;
  use Sprain\SwissQrBill\QrBill;
  use Sprain\SwissQrBill\Reference\QrPaymentReferenceGenerator;
  use Sprain\SwissQrBill\Validator\Exception\InvalidQrPaymentReferenceException;
@@ -98,12 +99,17 @@ class Configuration
     protected $receiverAddress = '';
 
     /**
-     * @var string «Einzahlung für» (ESR) / «Zugunsten von» (BESR) Adresszusatz
+     * @var string «Einzahlung für» (ESR) / «Zugunsten von» (BESR) Hausnummer
      */
-    protected $receiverAdditional = '';
+    protected $receiverBuildingNumber  = '';
 
     /**
-     * @var string «Einzahlung für» (ESR) / «Zugunsten von» (BESR) PLZ / Ort
+     * @var string «Einzahlung für» (ESR) / «Zugunsten von» (BESR) PLZ
+     */
+    protected $receiverPostalCode = '';
+
+    /**
+     * @var string «Einzahlung für» (ESR) / «Zugunsten von» (BESR) Ort
      */
     protected $receiverCity = '';
 
@@ -143,12 +149,17 @@ class Configuration
     protected $senderAddress = '';
 
     /**
-     * @var string «Einbezahlt von» Adresszusatz
+     * @var string «Einbezahlt von» Hausnummer
      */
-    protected $senderAdditional = '';
+    protected $senderBuildingNumber = '';
 
     /**
-     * @var string «Einbezahlt von» PLZ / Ort
+     * @var string «Einbezahlt von» PLZ
+     */
+    protected $senderPostalCode = '';
+
+    /**
+     * @var string «Einbezahlt von» Ort
      */
     protected $senderCity = '';
 
@@ -316,21 +327,26 @@ class Configuration
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getReceiverAdditional()
+    public function getReceiverBuildingNumber(): string
     {
-        return $this->receiverAdditional;
+        return $this->receiverBuildingNumber;
     }
 
-    /**
-     * @param string $receiverAdditional
-     * @return Configuration
-     */
-    public function setReceiverAdditional(string $receiverAdditional): Configuration
+    public function setReceiverBuildingNumber(string $receiverBuildingNumber): Configuration
     {
-        $this->receiverAdditional = $receiverAdditional;
+        $this->receiverBuildingNumber = $receiverBuildingNumber;
+
+        return $this;
+    }
+
+    public function getReceiverPostalCode(): string
+    {
+        return $this->receiverPostalCode;
+    }
+
+    public function setReceiverPostalCode(string $receiverPostalCode): Configuration
+    {
+        $this->receiverPostalCode = $receiverPostalCode;
 
         return $this;
     }
@@ -489,21 +505,26 @@ class Configuration
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getSenderAdditional()
+    public function getSenderBuildingNumber(): string
     {
-        return $this->senderAdditional;
+        return $this->senderBuildingNumber;
     }
 
-    /**
-     * @param string $senderAdditional
-     * @return Configuration
-     */
-    public function setSenderAdditional(string $senderAdditional): Configuration
+    public function setSenderBuildingNumber(string $senderBuildingNumber): Configuration
     {
-        $this->senderAdditional = $senderAdditional;
+        $this->senderBuildingNumber = $senderBuildingNumber;
+
+        return $this;
+    }
+
+    public function getSenderPostalCode(): string
+    {
+        return $this->senderPostalCode;
+    }
+
+    public function setSenderPostalCode(string $senderPostalCode): Configuration
+    {
+        $this->senderPostalCode = $senderPostalCode;
 
         return $this;
     }
@@ -797,18 +818,22 @@ class Configuration
     {
         $qrBill = QrBill::create();
         $qrBill->setCreditorInformation(CreditorInformation::create($this->getReceiverAccountIBAN()));
-        $qrBill->setCreditor(CombinedAddress::create(
+        $qrBill->setCreditor(StructuredAddress::createWithStreet(
             $this->getReceiver(),
-            $this->getReceiverAddress() . ' ' . $this->getReceiverAdditional(),
+            $this->getReceiverAddress(),
+            $this->getReceiverBuildingNumber(),
+            $this->getReceiverPostalCode(),
             $this->getReceiverCity(),
-            $this->getReceiverCountry())
-        );
+            $this->getReceiverCountry()
+        ));
         $qrBill->setPaymentAmountInformation(PaymentAmountInformation::create(
             $this->getCurrency(), $this->getAmount() / 100
         ));
-        $qrBill->setUltimateDebtor(CombinedAddress::create(
+        $qrBill->setUltimateDebtor(StructuredAddress::createWithStreet(
             $this->getSender(),
-            $this->getSenderAddress() . ' ' . $this->getSenderAdditional(),
+            $this->getSenderAddress(),
+            $this->getSenderBuildingNumber(),
+            $this->getSenderPostalCode(),
             $this->getSenderCity(),
             $this->getSenderCountry()
         ));
@@ -840,7 +865,7 @@ class Configuration
             return AlternativeScheme::create($schema);
         }, $this->getAlternativeSchemes()));
         if ($qrBill->isValid()) {
-            return base64_encode($qrBill->getQrCode()->getAsString());
+            return $qrBill->getQrCode()->getAsString();
         } else {
             return $qrBill->getViolations();
         }
