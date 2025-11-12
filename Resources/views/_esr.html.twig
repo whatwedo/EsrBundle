@@ -15,14 +15,12 @@
 {% endif %}
         <div id="esr_receiver_left">
             {{ data.receiver }}<br />
-            {% if data.receiverAddress %}{{ data.receiverAddress }}<br />{% endif %}
-            {% if data.receiverAdditional %}{{ data.receiverAdditional }}<br />{% endif %}
+            {% if data.receiverAddress or data.receiverBuildingNumber %}{{ data.receiverAddress }} {{ data.receiverBuildingNumber }}<br />{% endif %}
             {% if data.receiverCity %}{{ data.receiverCity }}{% endif %}
         </div>
         <div id="esr_receiver_right">
             {{ data.receiver }}<br />
-            {% if data.receiverAddress %}{{ data.receiverAddress }}<br />{% endif %}
-            {% if data.receiverAdditional %}{{ data.receiverAdditional }}<br />{% endif %}
+            {% if data.receiverAddress or data.receiverBuildingNumber %}{{ data.receiverAddress }} {{ data.receiverBuildingNumber }}<br />{% endif %}
             {% if data.receiverCity %}{{ data.receiverCity }}{% endif %}
         </div>
         <div id="esr_reference_number_left">
@@ -30,14 +28,12 @@
         </div>
         <div id="esr_sender_left">
             {{ data.sender }}<br />
-            {% if data.senderAddress %}{{ data.senderAddress }}<br />{% endif %}
-            {% if data.senderAdditional %}{{ data.senderAdditional }}<br />{% endif %}
+            {% if data.senderAddress or data.senderBuildingNumber %}{{ data.senderAddress }} {{ data.senderBuildingNumber }}<br />{% endif %}
             {% if data.senderCity %}{{ data.senderCity }}{% endif %}
         </div>
         <div id="esr_sender_right">
             {{ data.sender }}<br />
-            {% if data.senderAddress %}{{ data.senderAddress }}<br />{% endif %}
-            {% if data.senderAdditional %}{{ data.senderAdditional }}<br />{% endif %}
+            {% if data.senderAddress or data.senderBuildingNumber %}{{ data.senderAddress }} {{ data.senderBuildingNumber }}<br />{% endif %}
             {% if data.senderCity %}{{ data.senderCity }}{% endif %}
         </div>
         <div id="esr_reference_number">

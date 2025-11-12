@@ -19,8 +19,8 @@
     <strong>Konto / Zahlbar an</strong><br>
     {{ data.receiverAccountIBAN }}<br>
     {{ data.receiver }}<br>
-    {{ data.receiverAddress }} {{ data.receiverAdditional }}<br>
-    {{ data.receiverCountry }} - {{ data.receiverCity }}<br>
+    {{ data.receiverAddress }} {{ data.receiverBuildingNumber }}<br>
+    {{ data.receiverCountry }} - {{ data.receiverPostalCode }} {{ data.receiverCity }}<br>
 {% endmacro %}
 
 {% macro reference(data) %}
@@ -31,8 +31,8 @@
 {% macro debtor(data) %}
     <strong>Zahlbar durch</strong><br>
     {{ data.sender }}<br>
-    {{ data.senderAddress }} {{ data.senderAdditional }}<br>
-    {{ data.senderCountry }} - {{ data.senderCity }}<br>
+    {{ data.senderAddress }} {{ data.senderBuildingNumber }}<br>
+    {{ data.senderCountry }} - {{ data.senderPostalCode }} {{ data.senderCity }}<br>
 {% endmacro %}
 
 {% macro additionalInfo(data) %}
