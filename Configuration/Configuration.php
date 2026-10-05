@@ -29,7 +29,6 @@ namespace whatwedo\EsrBundle\Configuration;
 
  use Sprain\SwissQrBill\DataGroup\Element\AdditionalInformation;
  use Sprain\SwissQrBill\DataGroup\Element\AlternativeScheme;
- use Sprain\SwissQrBill\DataGroup\Element\CombinedAddress;
  use Sprain\SwissQrBill\DataGroup\Element\CreditorInformation;
  use Sprain\SwissQrBill\DataGroup\Element\PaymentAmountInformation;
  use Sprain\SwissQrBill\DataGroup\Element\PaymentReference;
