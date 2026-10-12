@@ -4,3 +4,7 @@ framework:
     csrf_protection: true
     validation:      { enabled: true }
     session:         ~
+
+knp_snappy:
+    pdf:
+        binary: /usr/local/bin/wkhtmltopdf
