@@ -35,3 +35,20 @@ public function registerBundles()
 ## Documentation
 
 * see [/Resources/docs](Resources/docs/index.md)-folder for usage.
+
+## Development
+
+The tests render PDFs and need wkhtmltopdf, which the Docker image provides. With [dde](https://github.com/whatwedo/dde):
+
+```
+dde project:up
+dde project:exec -- composer update --prefer-stable
+dde project:exec vendor/bin/phpunit
+```
+
+Without dde:
+
+```
+docker compose run --rm php composer update --prefer-stable
+docker compose run --rm php vendor/bin/phpunit
+```
