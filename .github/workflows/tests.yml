@@ -1,0 +1,30 @@
+name: Tests
+
+on:
+    push:
+        branches: [main, develop]
+    pull_request:
+
+jobs:
+    phpunit:
+        name: PHPUnit (Symfony ${{ matrix.symfony }})
+        runs-on: ubuntu-24.04
+        strategy:
+            fail-fast: false
+            matrix:
+                symfony: ['4.4.*', '5.4.*', '6.4.*', '7.4.*', '^8.0']
+        steps:
+            - uses: actions/checkout@v7
+
+            - run: docker compose build
+
+            - run: sudo chown -R 10000:10001 .
+
+            - run: |
+                  args=()
+                  for package in $(jq -r '(.require + ."require-dev") | keys[] | select(startswith("symfony/"))' composer.json); do
+                      args+=(--with "$package:${{ matrix.symfony }}")
+                  done
+                  docker compose run --rm php composer update --prefer-stable --no-interaction --no-progress "${args[@]}"
+
+            - run: docker compose run --rm php vendor/bin/phpunit
